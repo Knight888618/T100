@@ -129,7 +129,7 @@ void Copter::init_ardupilot()
 #endif
 
 #ifdef USERHOOK_INIT
-    USERHOOK_INIT
+    userhook_init();
 #endif
 
     // read Baro pressure at ground

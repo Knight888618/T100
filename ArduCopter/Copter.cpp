@@ -690,7 +690,7 @@ void Copter::three_hz_loop()
 
 // one_hz_loop - runs at 1Hz
 void Copter::one_hz_loop()
-{
+{gcs().send_text(MAV_SEVERITY_NOTICE, "p=%f", userhook.angle_pitch);
 #if HAL_LOGGING_ENABLED
     if (should_log(MASK_LOG_ANY)) {
         Log_Write_Data(LogDataID::AP_STATE, ap.value);

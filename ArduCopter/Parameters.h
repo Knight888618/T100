@@ -13,6 +13,8 @@
  #include <AC_AttitudeControl/AC_WeatherVane.h>
 #endif
 
+#include "UserParameters.h"
+
 // Global parameter class.
 //
 class Parameters {

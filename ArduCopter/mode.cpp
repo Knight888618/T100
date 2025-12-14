@@ -179,6 +179,12 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
             break;
 #endif
 
+#if MODE_LOITER_ENABLED
+        case Mode::Number::PARAGLID:
+            ret = &mode_paraglid;
+            break;
+#endif
+
         default:
             break;
     }

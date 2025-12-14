@@ -586,6 +586,13 @@ void AP_SerialManager::init()
                 case SerialProtocol_PPP:
                     break;
 #endif
+                case SerialProtocol_WIT:
+                    state[i].baud.set_default(115200);
+                    uart->begin(state[i].baudrate(),
+                                         256,
+                                         256);
+                    uart->set_flow_control(AP_HAL::UARTDriver::FLOW_CONTROL_DISABLE);
+                    break;
                     
                 default:
                     uart->begin(state[i].baudrate());

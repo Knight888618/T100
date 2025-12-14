@@ -224,6 +224,8 @@ public:
     friend class ModeAutorotate;
     friend class ModeTurtle;
 
+    friend class ModeParaglid;
+
     friend class _AutoTakeoff;
 
     friend class PayloadPlace;
@@ -298,6 +300,13 @@ private:
 #if AP_RPM_ENABLED
     AP_RPM rpm_sensor;
 #endif
+
+    struct
+	{
+    	AP_HAL::UARTDriver *local_port;
+    	float angle_pitch;
+    	bool initialised;
+    } userhook;
 
     // Inertial Navigation EKF - different viewpoint
     AP_AHRS_View *ahrs_view;
@@ -1030,6 +1039,7 @@ private:
     ModeLand mode_land;
 #if MODE_LOITER_ENABLED
     ModeLoiter mode_loiter;
+    ModeParaglid mode_paraglid;
 #endif
 #if MODE_POSHOLD_ENABLED
     ModePosHold mode_poshold;

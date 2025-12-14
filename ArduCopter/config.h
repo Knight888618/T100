@@ -604,5 +604,10 @@
 #endif
 
 #ifndef USER_PARAMS_ENABLED
-  #define USER_PARAMS_ENABLED 0
+  #define USER_PARAMS_ENABLED 1
+#endif
+
+#ifndef USERHOOK_INIT
+  #define USERHOOK_INIT 1
+  #define USERHOOK_MEDIUMLOOP 1
 #endif
