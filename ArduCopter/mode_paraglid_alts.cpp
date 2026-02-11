@@ -19,6 +19,8 @@ bool ModeParaglidAlts::init(bool ignore_checks)													// loiter_init - ini
 	_climb_rate_max = copter.g2.user_parameters.get2_climb_rate_max();
 	_climb_rate_min = copter.g2.user_parameters.get2_climb_rate_min();
 	_pitch_max = copter.g2.user_parameters.get_pitch_max();
+	_ctrl_climb_rate = copter.g2.user_parameters.get_ctrl_climb_rate();
+	_keep_climb_rate = copter.g2.user_parameters.get_keep_climb_rate();
 	_climb_rate_factor = (_climb_rate_max - _climb_rate_min) / (_sen_angle_max - _sen_angle_min);
 	float posD;
     if (copter.ahrs_view->get_relative_position_D_origin(posD))								//Ð¡ï¿½ï¿½ï¿½è¶¨ï¿½ß¶È¾ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½Ä£Ê½
@@ -31,10 +33,15 @@ bool ModeParaglidAlts::init(bool ignore_checks)													// loiter_init - ini
     }
 
 	gcs().send_text(MAV_SEVERITY_NOTICE, "Ctrl Angle1=%f,Ctrl Angle2=%f\r\n", _ctrl_angle1, _ctrl_angle2);
-
+    if(_ctrl_climb_rate < 0 || _ctrl_climb_rate >0.5 || _keep_climb_rate< _climb_rate_min || _keep_climb_rate>4)
+	{
+		gcs().send_text(MAV_SEVERITY_NOTICE, "Ckeck USER_KEEP_CLRATE and USR_CLIMB_RATE");
+		return false;
+	}
 	_channel_ctrl_state = 0x00;																	//ï¿½ï¿½Ê¼ï¿½ï¿½×´Ì¬
 	_target_pitch_angle = copter.g2.user_parameters.get2_ctrl_angle0();
 	_target_climb_rate = 0.0f;
+	_ctl_climb_rate_flag=false;
 
 	if (!copter.failsafe.radio)																	//Î´Ê§ï¿½Ø±ï¿½ï¿½ï¿½
 	{
@@ -146,6 +153,10 @@ void ModeParaglidAlts::run()																		// loiter_run - runs the loiter co
 		copter.set_mode(Mode::Number::BRAKE, ModeReason::RADIO_FAILSAFE);
     }
 
+	/*if(-inertial_nav.get_velocity_z_up_cms()<_keep_climb_rate) //µ±Ç°ÅÀÉýÂÊÐ¡ÓÚ±£³ÖÅÀÉýÂÊ
+	{
+		_target_climb_rate+=_ctrl_climb_rate/400;
+	}*/
     motors->set_desired_spool_state(AP_Motors::DesiredSpoolState::THROTTLE_UNLIMITED);			// set motors to full range
 
     attitude_control->input_euler_angle_roll_pitch_euler_rate_yaw(target_roll,constrain_float(target_pitch, -_pitch_max, _pitch_max), target_yaw_rate);// call attitude controller//constrain_float(target_pitch, -_pitch_max, _pitch_max)

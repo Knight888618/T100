@@ -2169,7 +2169,9 @@ private:
     float _target_climb_rate;
     float _pitch_max;
     float _target_pitch_angle;
-
+    float _ctrl_climb_rate;  //起飞后爬升速率 
+    float _keep_climb_rate;  //起飞后保持最低爬升率
+    bool  _ctl_climb_rate_flag;
     int16_t _pwm_value[3];
 
     uint8_t _channel_ctrl_state;

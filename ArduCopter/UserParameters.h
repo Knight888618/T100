@@ -18,6 +18,8 @@ public:
     AP_Float get_climb_rate_min() const { return _climb_rate_min; }
     AP_Float get_pitch_max() const { return _pitch_max; }
     AP_Float get_ctrl_angle0() const { return _ctrl_angle0; }
+    AP_Float get_ctrl_climb_rate() const { return _ctrl_climb_rate; }
+    AP_Float get_keep_climb_rate() const { return _keep_ctrl_climb_rate; }
 
     AP_Int16 get2_ctrl_alt() const { return T_ctrl_alt; }
     AP_Float get2_sen_angle_min() const { return T_sen_ang_min; }
@@ -42,7 +44,8 @@ private:
     AP_Float _climb_rate_min;
     AP_Float _pitch_max;
     AP_Float _ctrl_angle0;
-
+    AP_Float _ctrl_climb_rate;
+    AP_Float _keep_ctrl_climb_rate;
 
     AP_Int16 T_ctrl_alt;
     AP_Float T_sen_ang_max;
