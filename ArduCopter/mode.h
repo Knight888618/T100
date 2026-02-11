@@ -101,6 +101,8 @@ public:
         AUTO_RTL =     27,  // Auto RTL, this is not a true mode, AUTO will report as this mode if entered to perform a DO_LAND_START Landing sequence
         TURTLE =       28,  // Flip over after crash
 		PARAGLID =     50,  //
+		PARAGLID_ALT = 51,  //
+        PARAGLID_ALTS=52,
         // Mode number 127 reserved for the "drone show mode" in the Skybrush
         // fork at https://github.com/skybrush-io/ardupilot
     };
@@ -2091,3 +2093,85 @@ private:
 
     float target_pitch_angle;
 };
+
+class ModeParaglidAlt : public Mode
+{
+public:
+    using Mode::Mode;
+    Number mode_number() const override { return Number::PARAGLID_ALT; }
+
+    bool init(bool ignore_checks) override;
+    void run() override;
+
+    bool requires_GPS() const override { return true; }
+    bool has_manual_throttle() const override { return false; }
+    bool allows_arming(AP_Arming::Method method) const override { return true; };
+    bool is_autopilot() const override { return false; }
+    bool has_user_takeoff(bool must_navigate) const override { return true; }
+    bool allows_autotune() const override { return true; }
+
+protected:
+
+    const char *name() const override { return "PARAGLIDALT"; }
+    const char *name4() const override { return "PARA"; }
+
+private:
+    uint8_t _ratclb_p;
+    uint16_t _ctrl_alt;
+    float _sen_angle_min;
+    float _sen_angle_max;
+    float _ctrl_angle1;
+    float _ctrl_angle2;
+    float _angle_rate;
+    float _climb_rate_max;
+    float _climb_rate_min;
+    float _climb_rate_factor;
+    float _target_climb_rate;
+    float _pitch_max;
+    float _target_pitch_angle;
+
+    int16_t _pwm_value[3];
+
+    uint8_t _channel_ctrl_state;
+};
+class ModeParaglidAlts : public Mode
+{
+public:
+    using Mode::Mode;
+    Number mode_number() const override { return Number::PARAGLID_ALTS; }
+
+    bool init(bool ignore_checks) override;
+    void run() override;
+
+    bool requires_GPS() const override { return true; }
+    bool has_manual_throttle() const override { return false; }
+    bool allows_arming(AP_Arming::Method method) const override { return true; };
+    bool is_autopilot() const override { return false; }
+    bool has_user_takeoff(bool must_navigate) const override { return true; }
+    bool allows_autotune() const override { return true; }
+
+protected:
+
+    const char *name() const override { return "PARAGLIDALT"; }
+    const char *name4() const override { return "PARA"; }
+
+private:
+    uint8_t _ratclb_p;
+    uint16_t _ctrl_alt;
+    float _sen_angle_min;
+    float _sen_angle_max;
+    float _ctrl_angle1;
+    float _ctrl_angle2;
+    float _angle_rate;
+    float _climb_rate_max;
+    float _climb_rate_min;
+    float _climb_rate_factor;
+    float _target_climb_rate;
+    float _pitch_max;
+    float _target_pitch_angle;
+
+    int16_t _pwm_value[3];
+
+    uint8_t _channel_ctrl_state;
+};
+

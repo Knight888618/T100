@@ -690,7 +690,18 @@ void Copter::three_hz_loop()
 
 // one_hz_loop - runs at 1Hz
 void Copter::one_hz_loop()
-{gcs().send_text(MAV_SEVERITY_NOTICE, "p=%f", userhook.angle_pitch);
+{
+	gcs().send_text(MAV_SEVERITY_NOTICE, "p=%f", userhook.angle_pitch);
+    gcs().send_text(MAV_SEVERITY_NOTICE, "One Hz loop");
+    /*gcs().send_text(MAV_SEVERITY_NOTICE, "_ctrl_alt=%d", copter.g2.user_parameters.get2_ctrl_alt().get());
+    gcs().send_text(MAV_SEVERITY_NOTICE, "_sen_angle_min=%f", copter.g2.user_parameters.get2_sen_angle_min().get());
+    gcs().send_text(MAV_SEVERITY_NOTICE, "_sen_angle_max=%f", copter.g2.user_parameters.get2_sen_angle_max().get());
+    gcs().send_text(MAV_SEVERITY_NOTICE, "_ctrl_angle1=%f", copter.g2.user_parameters.get2_ctrl_angle1().get());
+    gcs().send_text(MAV_SEVERITY_NOTICE, "_ctrl_angle2=%f", copter.g2.user_parameters.get2_ctrl_angle2().get());
+    gcs().send_text(MAV_SEVERITY_NOTICE, "_angle_rate=%f", copter.g2.user_parameters.get2_ctrl_rate().get());
+    gcs().send_text(MAV_SEVERITY_NOTICE, "_climb_rate_max=%f", copter.g2.user_parameters.get2_climb_rate_max().get());
+    gcs().send_text(MAV_SEVERITY_NOTICE, "_climb_rate_min=%f", copter.g2.user_parameters.get2_climb_rate_min().get());
+    */
 #if HAL_LOGGING_ENABLED
     if (should_log(MASK_LOG_ANY)) {
         Log_Write_Data(LogDataID::AP_STATE, ap.value);

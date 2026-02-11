@@ -185,6 +185,13 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
             break;
 #endif
 
+        case Mode::Number::PARAGLID_ALT:
+            ret = &mode_paraglid_alt;
+            break;
+        case Mode::Number::PARAGLID_ALTS:
+            ret = &mode_paraglid_alts;
+            break;
+
         default:
             break;
     }

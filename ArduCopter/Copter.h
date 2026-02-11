@@ -153,7 +153,7 @@
 #endif
 
 #if AC_CUSTOMCONTROL_MULTI_ENABLED
-#include <AC_CustomControl/AC_CustomControl.h>                  // Custom control library
+#include <AC_CustomControl/AC_CustomControl.h>                  								// Custom control library
 #endif
 
 #if AP_AVOIDANCE_ENABLED && !AP_FENCE_ENABLED
@@ -174,7 +174,8 @@
 #endif
 #include "mode.h"
 
-class Copter : public AP_Vehicle {
+class Copter : public AP_Vehicle
+{
 public:
     friend class GCS_MAVLINK_Copter;
     friend class GCS_Copter;
@@ -225,6 +226,8 @@ public:
     friend class ModeTurtle;
 
     friend class ModeParaglid;
+    friend class ModeParaglidAlt;
+    friend class ModeParaglidAlts;
 
     friend class _AutoTakeoff;
 
@@ -233,7 +236,6 @@ public:
     Copter(void);
 
 private:
-
     // key aircraft parameters passed to multiple libraries
     AP_MultiCopter aparm;
 
@@ -1040,6 +1042,8 @@ private:
 #if MODE_LOITER_ENABLED
     ModeLoiter mode_loiter;
     ModeParaglid mode_paraglid;
+    ModeParaglidAlt mode_paraglid_alt;
+    ModeParaglidAlts mode_paraglid_alts;
 #endif
 #if MODE_POSHOLD_ENABLED
     ModePosHold mode_poshold;

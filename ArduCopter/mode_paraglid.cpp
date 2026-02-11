@@ -28,9 +28,8 @@ bool ModeParaglid::init(bool ignore_checks)														// loiter_init - initia
     pos_control->set_max_speed_accel_z(-get_pilot_speed_dn(), g.pilot_speed_up, g.pilot_accel_z);// set vertical speed and acceleration limits
     pos_control->set_correction_speed_accel_z(-get_pilot_speed_dn(), g.pilot_speed_up, g.pilot_accel_z);
 
-    _ratclb_p = copter.g2.user_parameters.get_ratclb_p();
 	_ctrl_alt = copter.g2.user_parameters.get_ctrl_alt();
-	_sen_angle = copter.g2.user_parameters.get_sen_angle();
+	_sen_angle = copter.g2.user_parameters.get_sen_angle_max();
 	_ctrl_angle1 = copter.g2.user_parameters.get_ctrl_angle1();
 	_ctrl_angle2 = copter.g2.user_parameters.get_ctrl_angle2();
 	_angle_rate = copter.g2.user_parameters.get_ctrl_rate();
@@ -47,8 +46,9 @@ bool ModeParaglid::init(bool ignore_checks)														// loiter_init - initia
 			_pwm_value[i-6] = rc_channel->get_radio_in();
 		}
 
-//		_pwm_value[0] = copter.g2.user_parameters.get_ch7_pwm();
-//		_pwm_value[1] = copter.g2.user_parameters.get_ch8_pwm();
+		//_pwm_value[0] = copter.g2.user_parameters.get_ch7_pwm();
+		//_pwm_value[1] = copter.g2.user_parameters.get_ch8_pwm();
+
 		if((_pwm_value[0] <1500) && (_pwm_value[1] <1500))										//初始进入模式需要7、8通道处于低位才有效
 		{
 			_channel_ctrl_state = 0x01;
@@ -60,6 +60,7 @@ bool ModeParaglid::init(bool ignore_checks)														// loiter_init - initia
 		}
 	}else
 	{
+		gcs().send_text(MAV_SEVERITY_NOTICE, "Radio FailSafe\r\n");
 		return false;
 	}
 
@@ -94,7 +95,7 @@ void ModeParaglid::run()																		// loiter_run - runs the loiter contro
         		target_climb_rate = 0.0f;
         		if(copter.userhook.angle_pitch < _sen_angle)
         		{
-        			target_climb_rate = _ratclb_p * 0.01f * g.pilot_speed_up;
+        			target_climb_rate = g.pilot_speed_up;
         		}
 
         		target_roll = 0.0f;
@@ -108,14 +109,14 @@ void ModeParaglid::run()																		// loiter_run - runs the loiter contro
     		_pwm_value[i-6] = rc_channel->get_radio_in();
     	}
 
-//		_pwm_value[0] = copter.g2.user_parameters.get_ch7_pwm();
-//		_pwm_value[1] = copter.g2.user_parameters.get_ch8_pwm();
+		//_pwm_value[0] = copter.g2.user_parameters.get_ch7_pwm();
+		//_pwm_value[1] = copter.g2.user_parameters.get_ch8_pwm();
 
-		if((_channel_ctrl_state == 0x01) && ((_pwm_value[0]>1500) && (_pwm_value[1]<1500)))//初始都在低值，有效状态，通道7起作用设置角度1，条件是打到高位，同时通道8处于低位
+		if((_channel_ctrl_state == 0x01) && ((_pwm_value[0]>1500) && (_pwm_value[1]<1500)))		//初始都在低值，有效状态，通道7起作用设置角度1，条件是打到高位，同时通道8处于低位
 		{
 	    	target_pitch_angle = _ctrl_angle1;
-	    	_channel_ctrl_state = 0x02;														//确认角度模式后退出
-		}																					//第二次执行到加减模式
+	    	_channel_ctrl_state = 0x02;															//确认角度模式后退出
+		}																						//第二次执行到加减模式
 
     	if((_pwm_value[1]>1500)	&& ((_channel_ctrl_state == 0x01) || (_channel_ctrl_state == 0x02)))//通道8处于到位直接设置角度2
     	{
@@ -141,7 +142,7 @@ void ModeParaglid::run()																		// loiter_run - runs the loiter contro
 				}
 			}
 
-			target_pitch = target_pitch_angle*100;
+			target_pitch = target_pitch_angle*100.f;
 		}
 
         target_climb_rate = constrain_float(target_climb_rate, -get_pilot_speed_dn(), g.pilot_speed_up);//限制爬升率
@@ -182,7 +183,8 @@ void ModeParaglid::run()																		// loiter_run - runs the loiter contro
 
     case AltHoldModeState::Takeoff:																// initiate take-off
 
-        if (!takeoff.running()) {
+        if (!takeoff.running())
+        {
             takeoff.start(constrain_float(g.pilot_takeoff_alt,0.0f,1000.0f));
         }
 
