@@ -5,7 +5,7 @@ void Copter::userhook_init()
 {
 	if(!userhook.initialised)
 	{
-		userhook.local_port = AP::serialmanager().find_serial(AP_SerialManager::SerialProtocol_WIT, 0);//²éÕÒ±¾µØ¶Ë¿Ú
+		userhook.local_port = AP::serialmanager().find_serial(AP_SerialManager::SerialProtocol_WIT, 0);//ï¿½ï¿½ï¿½Ò±ï¿½ï¿½Ø¶Ë¿ï¿½
 
 		if(userhook.local_port)
 		{
@@ -37,43 +37,43 @@ void Copter::userhook_MediumLoop()
 	uint8_t data_byte=0;
 	uint8_t buffer_index = 0;
 	uint8_t frame_flag=0;
-    uint8_t data_buffer_r[100];																	//½ÓÊÕ»º³å
+    uint8_t data_buffer_r[100];																	//ï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½
 
 	if(userhook.initialised)
 	{
-		num_byte = userhook.local_port->available();												//¶ÁÈ¡»º³åÇø¿ÉÓÃ×Ö½ÚÊý
+		num_byte = userhook.local_port->available();												//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½ï¿½ï¿½
 
-		while(num_byte--)																			//Ò»´Î¶ÁÈ¡Ò»¸ö×Ö½Ú
+		while(num_byte--)																			//Ò»ï¿½Î¶ï¿½È¡Ò»ï¿½ï¿½ï¿½Ö½ï¿½
 		{
-			data_byte = userhook.local_port->read();												//¶ÁÈ¡Ò»¸ö×Ö½Ú
+			data_byte = userhook.local_port->read();												//ï¿½ï¿½È¡Ò»ï¿½ï¿½ï¿½Ö½ï¿½
 
-			if(frame_flag==0)																		//³õÊ¼Í¬²½±êÖ¾
+			if(frame_flag==0)																		//ï¿½ï¿½Ê¼Í¬ï¿½ï¿½ï¿½ï¿½Ö¾
 			{
-				if((data_byte == 0x55) && (buffer_index==0))										//¶Áµ½Ö¡Í·1
+				if((data_byte == 0x55) && (buffer_index==0))										//ï¿½ï¿½ï¿½ï¿½Ö¡Í·1
 				{
-					data_buffer_r[buffer_index++] = data_byte;										//±£´æµ½»º³åÇø
-					continue;																		//ÍË³ö±¾´ÎÑ­»·
+					data_buffer_r[buffer_index++] = data_byte;										//ï¿½ï¿½ï¿½æµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					continue;																		//ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
 				}
 
-				if((data_byte == 0x53) && (buffer_index==1))										//¶ÁÈ¡ÏÂÒ»¸ö×Ö½Ú£¬Èç¹û¶Áµ½Ö¡Í·0xBB
+				if((data_byte == 0x53) && (buffer_index==1))										//ï¿½ï¿½È¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö½Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡Í·0xBB
 				{
-					data_buffer_r[buffer_index++] = data_byte;										//±£´æµ½»º³åÇø
+					data_buffer_r[buffer_index++] = data_byte;										//ï¿½ï¿½ï¿½æµ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					frame_flag = 1;
-					continue;																		//ÍË³ö±¾´ÎÑ­»·
+					continue;																		//ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½Ñ­ï¿½ï¿½
 				}
 			}
 			if(frame_flag == 1)
 			{
-				data_buffer_r[buffer_index++] = data_byte;											//±£´æ·ÇÖ¡Í·µÄÊý¾Ý×Ö½Ú
+				data_buffer_r[buffer_index++] = data_byte;											//ï¿½ï¿½ï¿½ï¿½ï¿½Ö¡Í·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö½ï¿½
 
-				if(buffer_index == 11)																//¶ÁÈ¡µ½Ò»Ö¡ÍêÕûÊý¾Ý
+				if(buffer_index == 11)																//ï¿½ï¿½È¡ï¿½ï¿½Ò»Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				{
-					for(buffer_index=0; buffer_index<10; buffer_index++)							//¼ÆËãÐ£ÑéºÍ
+					for(buffer_index=0; buffer_index<10; buffer_index++)							//ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½
 					{
 						check_sum = check_sum + data_buffer_r[buffer_index];
 					}
 
-					if(check_sum == data_buffer_r[10])												//Ð£ÑéºÍÆ¥Åä¡¢ÊÕµ½µÄÊÇ´Ó»úÒª¸úËæµÄÍ·»úÏµÍ³ID
+					if(check_sum == data_buffer_r[10])												//Ð£ï¿½ï¿½ï¿½Æ¥ï¿½ä¡¢ï¿½Õµï¿½ï¿½ï¿½ï¿½Ç´Ó»ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½ï¿½ÏµÍ³ID
 					{
 						short value = data_buffer_r[3] << 8 | data_buffer_r[2];
 						userhook.angle_pitch = ((float)value/32768)*180.0f;

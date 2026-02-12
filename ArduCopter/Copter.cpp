@@ -692,7 +692,8 @@ void Copter::three_hz_loop()
 void Copter::one_hz_loop()
 {
 	gcs().send_text(MAV_SEVERITY_NOTICE, "p=%f", userhook.angle_pitch);
-    gcs().send_text(MAV_SEVERITY_NOTICE, "One Hz loop");
+    gcs().send_text(MAV_SEVERITY_NOTICE, "InNav_vz=%f",inertial_nav.get_velocity_z_up_cms());
+    gcs().send_text(MAV_SEVERITY_NOTICE, "_ctrl_climb_base=%f", mode_paraglid_alts._ctrl_climb_base);
     /*gcs().send_text(MAV_SEVERITY_NOTICE, "_ctrl_alt=%d", copter.g2.user_parameters.get2_ctrl_alt().get());
     gcs().send_text(MAV_SEVERITY_NOTICE, "_sen_angle_min=%f", copter.g2.user_parameters.get2_sen_angle_min().get());
     gcs().send_text(MAV_SEVERITY_NOTICE, "_sen_angle_max=%f", copter.g2.user_parameters.get2_sen_angle_max().get());

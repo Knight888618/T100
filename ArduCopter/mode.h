@@ -2149,6 +2149,7 @@ public:
     bool is_autopilot() const override { return false; }
     bool has_user_takeoff(bool must_navigate) const override { return true; }
     bool allows_autotune() const override { return true; }
+    float _ctrl_climb_base;  //爬升率控制基数 
 
 protected:
 
@@ -2169,9 +2170,13 @@ private:
     float _target_climb_rate;
     float _pitch_max;
     float _target_pitch_angle;
-    float _ctrl_climb_rate;  //起飞后爬升速率 
+    float _ctrl_climb_rate;  //起飞后爬升加速度
+    
     float _keep_climb_rate;  //起飞后保持最低爬升率
-    bool  _ctl_climb_rate_flag;
+    bool _keep_climb_rate_flag;//进入基数爬升率控制标志位
+    
+
+    //bool  _ctl_climb_rate_flag;
     int16_t _pwm_value[3];
 
     uint8_t _channel_ctrl_state;
