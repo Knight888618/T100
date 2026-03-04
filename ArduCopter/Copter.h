@@ -227,7 +227,7 @@ public:
 
     friend class ModeParaglid;
     friend class ModeParaglidAlt;
-    friend class ModeParaglidAlts;
+    friend class ModeParaglidAlts;//牵引伞双人模式
 
     friend class _AutoTakeoff;
 
@@ -1037,6 +1037,7 @@ private:
 #endif
 #if MODE_GUIDED_ENABLED
     ModeGuided mode_guided;
+    ModeMyGuided mode_myguide;
 #endif
     ModeLand mode_land;
 #if MODE_LOITER_ENABLED

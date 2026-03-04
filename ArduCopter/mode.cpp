@@ -191,7 +191,9 @@ Mode *Copter::mode_from_mode_num(const Mode::Number mode)
         case Mode::Number::PARAGLID_ALTS:
             ret = &mode_paraglid_alts;
             break;
-
+        case Mode::Number::MYGUIDEMODE:
+            ret = &mode_myguide;
+            break;
         default:
             break;
     }
