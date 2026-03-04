@@ -1037,7 +1037,7 @@ private:
 #endif
 #if MODE_GUIDED_ENABLED
     ModeGuided mode_guided;
-    ModeMyGuided mode_myguide;
+    //ModeMyGuided mode_myguide;
 #endif
     ModeLand mode_land;
 #if MODE_LOITER_ENABLED

@@ -2188,7 +2188,7 @@ public:
 #if AP_EXTERNAL_CONTROL_ENABLED
     friend class AP_ExternalControl_Copter;
 #endif
-
+/*
     // inherit constructor
     using Mode::Mode;
     Number mode_number() const override { return Number::GUIDED; }
@@ -2336,5 +2336,6 @@ private:
 
     // guided mode is paused or not
     bool _paused;
+    */
 };
 
